@@ -1,23 +1,23 @@
 const cards = [{
-  cat: 'Urban Planning',
+  cat: 'urban',
   name: 'Urban Planning',
   title: 'AngularDe',
   desc: 'Description',
   date: '0w9/12/12'
 }, {
-  cat: 'Urban Planning',
+  cat: 'urban',
   name: 'jjuhg',
   title: 'AngularDe',
   desc: 'Description',
   date: 'e09/12/12'
 }, {
-  cat: 'Urban Planning',
+  cat: 'web',
   name: '3',
   title: 'AngularDe',
   desc: 'Description',
   date: '0w9/12/12'
 }, {
-  cat: 'Urban Planning',
+  cat: 'web',
   name: '4',
   title: 'AngularDe',
   desc: 'Description',
@@ -32,10 +32,7 @@ let objs = [];
 let selection = [];
 let targets = { table: [], grid: [] };
 
-init();
-animate();
-
-function init() {
+const init = () => {
 
   camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
   camera.position.z = 3000;
@@ -54,10 +51,11 @@ function init() {
         </div>`);
     $(element).click(ev => {
       ev.stopPropagation();
-      $(element).addClass('-on');
+      $(element).toggleClass('-on');
+      // $(element).addClass('-on');
       console.log(ev);
         $('.project-info').text(`${el.desc}`)
-        $('.project-info').addClass('-show');
+        $('.project-info').toggleClass('-show');
 
     })
     const obj = new THREE.CSS3DObject(element[0]);
@@ -69,10 +67,6 @@ function init() {
   });
   setTable();
   setGrid();
-
-
-
-
   //
 
   renderer = new THREE.CSS3DRenderer();
@@ -97,26 +91,21 @@ function init() {
   });
 
   $('.sort').click((ev) => {
-    objs = _.sortBy(objs, 'name').reverse();
-    transform(targets.grid, 2000);
+    // objs = _.sortBy(objs, 'name').reverse();
+    // transform(targets.grid, 2000);
 
-    if (selection.length > 0) {
-      selection.forEach(el => {
-        $(el).removeClass('-on')
-      })
-    }
+    // if (selection.length > 0) {
+    //   selection.forEach(el => {
+    //     $(el).removeClass('-on')
+    //   })
+    // }
     selection.pop();
-    const el = $(ev.target).text();
-    switch (el) {
-      case 'Planning':
-        $('.card-item.Urban.Planning').addClass('-on');
-        selection.push($('.card-item.Urban.Planning'));
-        break;
-    
-      default:
-        break;
-    }
-    console.log(selection)
+    const klass = $(ev.target).attr('class').split(' ').filter(el => {
+      return el !== 'sort' && el.indexOf('-') === -1;
+    })[0];
+    if (klass) {
+      $(`.card-item.${klass}`).toggleClass('-on');
+    } 
   });
 
   transform(targets.table, 2000);
@@ -124,11 +113,11 @@ function init() {
   $(window).resize(onWindowResize);
 }
 
-function transform(targets, duration, type) {
+const transform = (targets, duration, type) => {
   TWEEN.removeAll();
   objs.forEach((el, i) => {
-    var obj = objs[i];
-    var target = targets[i];
+    const obj = objs[i];
+    const target = targets[i];
 
     new TWEEN.Tween(obj.position)
       .to({ x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration)
@@ -148,32 +137,30 @@ function transform(targets, duration, type) {
       .start();
   }
 
-
-
   new TWEEN.Tween(this)
     .to({}, duration * 2)
     .onUpdate(render)
     .start();
 }
 
-function onWindowResize() {
+const onWindowResize = () => {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
   render();
 }
 
-function animate() {
+const animate = () => {
   requestAnimationFrame(animate);
   TWEEN.update();
   controls.update();
 }
 
-function render() {
+const render = () => {
   renderer.render(scene, camera);
 }
 
-function setTable() {
+const setTable = () => {
   targets.table.pop();
 
   // table
@@ -187,11 +174,11 @@ function setTable() {
   })
 }
 
-function setGrid() {
+const setGrid = () => {
   // grid
   targets.grid.pop();
   cards.forEach((el, i) => {
-    var obj = new THREE.Object3D();
+    const obj = new THREE.Object3D();
     obj.position.x = ((i % 2) * 400) + 300;
     obj.position.y = (- (Math.floor(i / 2) % 2) * 200);
     obj.position.z = (Math.floor(i / 2)) * 500;
@@ -199,3 +186,6 @@ function setGrid() {
     targets.grid.push(obj);
   });
 }
+
+init();
+animate();

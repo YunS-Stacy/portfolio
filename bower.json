@@ -1,16 +1,30 @@
 {
-  "name": "webapp",
+  "name": "website",
   "private": true,
   "dependencies": {
     "jquery": "~2.1.1",
     "three.js": "three#*",
     "tween.js": "tweenjs#^16.6.0",
-    "TrackballControls": "https://github.com/mrdoob/three.js/blob/dev/examples/js/controls/TrackballControls.js",
+    "TrackballControls": "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/js/controls/TrackballControls.js",
     "CSS3DRenderer": "https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/js/renderers/CSS3DRenderer.js",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
     "chai": "^4.1.2",
     "mocha": "^3.5.3"
-  }
+  },
+  "homepage": "https://github.com/YunS-Stacy/portfolio",
+  "authors": [
+    "Yun Shi <shiyun_stacy@yahoo.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }
