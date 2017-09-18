@@ -1,0 +1,47 @@
+.main-view {
+  display: flex;
+  >:not(.cards-list) {
+    z-index: 1;
+  }
+  >.left-sidebar {
+    margin: 4.8rem;
+  }
+}
+button {
+  font: $font-body;
+}
+.transform {
+  color: rgba(127,255,255,0.75);
+  background: transparent;
+  outline: 1px solid rgba(127,255,255,0.75);
+  border: 0;
+  padding: .5rem .8rem;
+  cursor: pointer;
+  transition: background-color 1s;
+
+  &:hover {
+    background-color: rgba(0,255,255,0.5);
+  }
+
+  &:active {
+    color: #000000;
+    background-color: rgba(0,255,255,0.75);
+  }
+}
+
+.sort {
+  color: rgba(127,255,255,0.75);
+  background: transparent;
+  outline: none;
+  border: 0.1rem solid transparent;
+  padding: .5rem .8rem;
+  cursor: pointer;
+  transition: border .5s;
+  &:hover {
+    border-bottom: 0.1rem solid rgba(0,255,255,0.5);
+  }
+
+  &:active {
+    border-bottom: 0.1rem solid rgba(0,255,255,0.5);
+  }
+}

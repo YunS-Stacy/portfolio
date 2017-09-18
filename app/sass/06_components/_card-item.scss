@@ -1,0 +1,57 @@
+.card-item {
+	padding: 1.6rem;
+	width: 24rem;
+	height: 24rem;
+	box-shadow: 0px 0px 1.6rem rgba(0,255,255,0.5);
+	border: 0.2rem solid rgba(127,255,255,0.25);
+	text-align: left;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	background-color: fade-out($theme, 0.9);
+	transition: box-shadow 1s, border-color 1s, background-color 1s;
+	cursor: pointer;
+	
+	&.-on {
+		box-shadow: 0 0 8rem rgba(0,255,255,0.75);
+		border-color: rgba(127,255,255,0.75);
+		background-color: fade-out($theme, 0.75);
+	}
+
+	&:hover {
+		box-shadow: 0 0 16rem rgba(0,255,255,0.75);
+		border-color: rgba(127,255,255,0.75);
+		background-color: fade-out($theme, 0.6);
+	}
+
+	> * {
+		color: rgba(127,255,255,0.75);
+	}
+
+	>.name {
+		// position: absolute;
+		top: 40px;
+		left: 0px;
+		right: 0px;
+		font: $font-headline;
+		color: rgba(255,255,255,0.75);
+
+		text-shadow: 0 0 10px rgba(0,255,255,0.95);
+	}
+	
+	>.cat {
+		font: $font-subheader;
+	}
+
+	>.desc {
+		font: $font-body;
+	}
+
+	>.date {
+		bottom: 15px;
+		left: 0px;
+		right: 0px;
+		font: $font-caption;
+		text-align: right;
+	}
+}

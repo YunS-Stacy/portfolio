@@ -1,0 +1,14 @@
+  .project-info {
+    width: 0;
+    height: 0;
+    font-size: 0;
+    transition: width 1s, height 0.5s 0.5s, font 0.5s ease 0.5s;
+
+
+    &.-show {
+      width: 20rem;
+      height: 20rem;
+      border: 0.1rem solid $theme;
+      font: $font-body;
+    }
+  }

@@ -1,0 +1,25 @@
+.left-sidebar {
+  width: 30%;
+  position: absolute;
+  z-index: 1000;
+  overflow-y: hidden;
+  >* {
+    color: fade-out($theme, 0.25);
+  }  
+
+  >.heading {
+    font: $font-jumbo;
+  }
+  .text {
+        font: $font-body;
+        >.-ul {
+          list-style: none;
+          font-style: italic;
+          font-weight: $font-weight-light;
+
+        }
+
+  }
+
+
+}

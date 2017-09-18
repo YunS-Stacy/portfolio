@@ -17,11 +17,17 @@
 @import
 '05_basics/type';
 
-// @import
-// '06_components/foo';
+@import
+'06_components/cards-list',
+'06_components/card-item',
+'06_components/left-sidebar',
+'06_components/social-media',
+'06_components/project-info';
 
-// @import
-// '07_layouts/page';
+
+@import
+'07_layouts/root',
+'07_layouts/main-view';
 
 // @import
 // '08_overrides/foo';

@@ -1,0 +1,23 @@
+.social-media {
+  display: inline-flex;
+  cursor: default;
+  color: fade-out($theme, .5);
+
+  > a {
+    text-decoration: none;
+    color: fade-out($theme, .5);
+    font-size: 1.8rem;
+
+      transition: color .5s, text-shadow .5s;
+
+
+    &:hover {
+      text-shadow: 0 0 3.2rem rgba(0, 255, 255, .8);
+      color: fade-out($theme, .2);
+    }
+
+    &.icon-github{
+      font-size: 2rem;
+    }
+  }
+}
