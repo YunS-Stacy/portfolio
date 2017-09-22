@@ -1,23 +1,23 @@
 const cards = [{
-  cat: 'urban',
+  cat: ['urban', 'web'],
   name: 'Urban Planning',
   title: 'AngularDe',
   desc: 'Description',
   date: '0w9/12/12'
 }, {
-  cat: 'urban',
+  cat: ['urban'],
   name: 'jjuhg',
   title: 'AngularDe',
   desc: 'Description',
   date: 'e09/12/12'
 }, {
-  cat: 'web',
+  cat: ['web'],
   name: '3',
   title: 'AngularDe',
   desc: 'Description',
   date: '0w9/12/12'
 }, {
-  cat: 'web',
+  cat: ['web'],
   name: '4',
   title: 'AngularDe',
   desc: 'Description',
@@ -36,34 +36,62 @@ const init = () => {
 
   camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 10000);
   camera.position.z = 3000;
-  console.log(camera.position, 'camera')
 
   scene = new THREE.Scene();
 
   // 
-  cards.forEach((el, i) => {
+  cards.forEach(el => {
     const element = $(`
-        <div class="card-item ${el.cat}" id="${i}">
+        <div class="card-item">
             <div class="cat">${el.cat}</div>
             <div class="name">${el.name}</div>
             <div class="desc">${el.desc}</div>
             <div class="date">${el.date}</div>
         </div>`);
-    $(element).click(ev => {
-      ev.stopPropagation();
-      $(element).toggleClass('-on');
-      // $(element).addClass('-on');
-      console.log(ev);
-        $('.project-info').text(`${el.desc}`)
-        $('.project-info').toggleClass('-show');
-
+    el.cat.forEach(datum => {
+      element.addClass(datum);
     })
-    const obj = new THREE.CSS3DObject(element[0]);
-    obj.name=`${i}`;
-    scene.add(obj);
 
+    const obj = new THREE.CSS3DObject(element[0]);
+    obj.name=`${el.cat}`;
+    scene.add(obj);
     objs.push(obj);
-    console.log(objs)
+    
+    $(element).click(ev => {
+      $(element).toggleClass('-on');
+      $(element).siblings().removeClass('-on');
+
+      transform(targets.grid, 2000);
+      // assign new position as grid position
+      Object.assign(obj.position, targets.grid[objs.indexOf(obj)].position)
+      let target = targets.grid[objs.indexOf(obj)];
+      target.position.x -= 1000;
+      target.position.z = 2500;
+      new TWEEN.Tween(obj.position)
+        .to({ x: target.position.x, z: target.position.z }, 1000)
+        .easing(TWEEN.Easing.Exponential.InOut)
+        .delay(3000)
+        .start();
+
+      // new TWEEN.Tween(obj.position)
+      //   .to({ z: target.position.z }, 1000)
+      //   .easing(TWEEN.Easing.Exponential.InOut)
+      //   .delay(3000)
+      //   .start();
+
+      new TWEEN.Tween(this)
+        .to({}, (2000 + 1000 + 2000 + 1000 + 3000))
+        .onUpdate(render)
+        .start();
+
+      console.log(obj)
+      ev.stopPropagation();
+      // $(element).addClass('-on');
+      // console.log(ev);
+      // $('.project-info').text(`${el.desc}`)
+      // $('.project-info').toggleClass('-show');
+    })
+
   });
   setTable();
   setGrid();
@@ -91,21 +119,17 @@ const init = () => {
   });
 
   $('.sort').click((ev) => {
-    // objs = _.sortBy(objs, 'name').reverse();
-    // transform(targets.grid, 2000);
 
-    // if (selection.length > 0) {
-    //   selection.forEach(el => {
-    //     $(el).removeClass('-on')
-    //   })
-    // }
-    selection.pop();
-    const klass = $(ev.target).attr('class').split(' ').filter(el => {
-      return el !== 'sort' && el.indexOf('-') === -1;
+    $(ev.target).toggleClass('-clicked');
+
+    const klass = Array.from($(ev.target)[0].classList).filter(el => {
+      return el !== 'sort' && !el.includes('-');
     })[0];
     if (klass) {
-      $(`.card-item.${klass}`).toggleClass('-on');
-    } 
+      // $(`.card-item:not(.${klass})`).removeClass('-group');
+      $(`.card-item.${klass}`).addClass('-group');
+
+    };
   });
 
   transform(targets.table, 2000);
@@ -113,11 +137,17 @@ const init = () => {
   $(window).resize(onWindowResize);
 }
 
-const transform = (targets, duration, type) => {
-  TWEEN.removeAll();
+const transform = (dest, duration) => {
+  console.log(dest === targets.grid)
+
+  if (dest === targets.grid) {
+    console.log(dest === targets.grid)
+    $('.card-list').addClass('-grid');
+  }
+    TWEEN.removeAll();
   objs.forEach((el, i) => {
     const obj = objs[i];
-    const target = targets[i];
+    const target = dest[i];
 
     new TWEEN.Tween(obj.position)
       .to({ x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration)
@@ -125,22 +155,13 @@ const transform = (targets, duration, type) => {
       .start();
 
   });
-  if (type === 'grid') {
-    new TWEEN.Tween(camera.position)
-      .to({ x: 5000 }, duration * 2)
-      .easing(TWEEN.Easing.Exponential.InOut)
-      .start();
-  } else {
-    new TWEEN.Tween(camera.position)
-      .to({ x: 0 }, duration * 2)
-      .easing(TWEEN.Easing.Exponential.InOut)
-      .start();
-  }
 
   new TWEEN.Tween(this)
     .to({}, duration * 2)
     .onUpdate(render)
     .start();
+
+
 }
 
 const onWindowResize = () => {
@@ -176,13 +197,12 @@ const setTable = () => {
 
 const setGrid = () => {
   // grid
-  targets.grid.pop();
+  targets.grid = [];
   cards.forEach((el, i) => {
     const obj = new THREE.Object3D();
-    obj.position.x = ((i % 2) * 400) + 300;
-    obj.position.y = (- (Math.floor(i / 2) % 2) * 200);
-    obj.position.z = (Math.floor(i / 2)) * 500;
-    console.log(obj.position, 'grid position')
+    obj.position.x = 1000;
+    obj.position.y = 0;
+    obj.position.z = i * 500;
     targets.grid.push(obj);
   });
 }

@@ -29,7 +29,7 @@ button {
   }
 }
 
-.sort {
+.sort:not(.-ul) {
   color: rgba(127,255,255,0.75);
   background: transparent;
   outline: none;
@@ -37,11 +37,9 @@ button {
   padding: .5rem .8rem;
   cursor: pointer;
   transition: border .5s;
-  &:hover {
+
+  &:hover, &:active, &.-clicked {
     border-bottom: 0.1rem solid rgba(0,255,255,0.5);
   }
 
-  &:active {
-    border-bottom: 0.1rem solid rgba(0,255,255,0.5);
-  }
 }
